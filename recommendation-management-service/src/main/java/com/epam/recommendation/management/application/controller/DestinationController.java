@@ -1,5 +1,7 @@
 package com.epam.recommendation.management.application.controller;
 
+import com.epam.recommendation.management.application.dto.DestinationDetailsDTO;
+import com.epam.recommendation.management.application.dto.DestinationListDTO;
 import com.epam.recommendation.management.application.dto.DestinationRequest;
 import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.response.ApiResponse;
@@ -30,10 +32,15 @@ public class DestinationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Destination>> getDestinationsByStateId(@PathVariable("id") Long stateId){
-        List<Destination> destinations = destinationService.getAllDestinationsByStateId(stateId);
-        return ResponseEntity.ok(destinations); // Return the list of destinations with a 200 OK status
+    public ResponseEntity<List<DestinationListDTO>> getDestinations(@PathVariable("id") Long stateId){
+        List<DestinationListDTO> destinations=destinationService.getDestinationNamesByStateId(stateId);
+        return  ResponseEntity.ok(destinations);
+    }
 
+    @GetMapping("/details/{id}")
+    public ResponseEntity<DestinationDetailsDTO> getDestination(@PathVariable("id") Long destinationId){
+        DestinationDetailsDTO destination=destinationService.getDestinationInformation(destinationId);
+        return  ResponseEntity.ok(destination);
     }
 
     @PatchMapping("{id}")
