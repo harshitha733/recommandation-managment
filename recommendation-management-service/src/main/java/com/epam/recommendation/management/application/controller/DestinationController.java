@@ -31,20 +31,20 @@ public class DestinationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<DestinationListDTO>> getDestinations(@PathVariable("id") Long stateId){
+    @GetMapping("/{stateId}")
+    public ResponseEntity<List<DestinationListDTO>> getDestinations(@PathVariable("stateId") Long stateId){
         List<DestinationListDTO> destinations=destinationService.getDestinationNamesByStateId(stateId);
         return  ResponseEntity.ok(destinations);
     }
 
-    @GetMapping("/details/{id}")
-    public ResponseEntity<DestinationDetailsDTO> getDestination(@PathVariable("id") Long destinationId){
+    @GetMapping("/details/{destinationId}")
+    public ResponseEntity<DestinationDetailsDTO> getDestination(@PathVariable("destinationId") Long destinationId){
         DestinationDetailsDTO destination=destinationService.getDestinationInformation(destinationId);
         return  ResponseEntity.ok(destination);
     }
 
-    @PatchMapping("{id}")
-    public ResponseEntity<Destination> updateDestination(@PathVariable("id") Long destinationId,@RequestBody Map<String,Object> destinationUpdateDetails){
+    @PatchMapping("{destinationId}")
+    public ResponseEntity<Destination> updateDestination(@PathVariable("destinationId") Long destinationId,@RequestBody Map<String,Object> destinationUpdateDetails){
         Destination destination=destinationService.updateDestination(destinationId, destinationUpdateDetails);
         return ResponseEntity.ok(destination);
     }
