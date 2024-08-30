@@ -1,5 +1,6 @@
 package com.epam.recommendation.management.application.service;
 
+import com.epam.recommendation.management.application.dto.DestinationRequest;
 import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.entity.Country;
@@ -28,18 +29,29 @@ public class DestinationService {
     @Autowired
     private CountryRepository countryRepository;
 
-    public Destination createDestination(Destination destination) {
+    public Destination convertToEntity(DestinationRequest request){
+        Destination destination =new Destination();
+        destination.setDestinationName(request.getDestinationName());
+        destination.setRating(request.getRating());
+        destination.setDescription(request.getDescription());
+        destination.setImageUrl(request.getImageUrl());
+        destination.setState(request.getState());
+        return destination;
+    }
+
+    public Destination createDestination(DestinationRequest request) {
+        Destination destination=convertToEntity(request);
 
         Country country = countryRepository.findByCountryName(destination.getState().getCountry().getCountryName())
-                .orElseGet(() -> countryRepository.save(destination.getState().getCountry()));
-
+//                .orElseGet(() -> countryRepository.save(destination.getState().getCountry()));
+                .orElseThrow(()-> new EntityNotFoundException("no such country"));
 
         State state = stateRepository.findByStateNameAndCountry(destination.getState().getStateName(), country)
-                .orElseGet(() -> {
-                    destination.getState().setCountry(country);
-                    destination.getState().setImageUrl(destination.getState().getImageUrl());
-                    return stateRepository.save(destination.getState());
-                });
+//                .orElseGet(() -> {
+//                    destination.getState().setCountry(country);
+//                    return stateRepository.save(destination.getState());
+//                });
+                .orElseThrow(() -> new EntityNotFoundException("State not found"));
 
         destination.setState(state);
         return destinationRepository.save(destination);

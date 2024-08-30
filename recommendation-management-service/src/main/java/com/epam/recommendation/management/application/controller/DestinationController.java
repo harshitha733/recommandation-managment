@@ -1,6 +1,8 @@
 package com.epam.recommendation.management.application.controller;
 
+import com.epam.recommendation.management.application.dto.DestinationRequest;
 import com.epam.recommendation.management.application.entity.Destination;
+import com.epam.recommendation.management.application.response.ApiResponse;
 import com.epam.recommendation.management.application.service.DestinationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,22 +19,14 @@ public class DestinationController {
     @Autowired
     private DestinationService destinationService;
     @PostMapping
-    public ResponseEntity<?> createDestination(@RequestBody Destination destination) {
-        try {
-            Destination savedDestination = destinationService.createDestination(destination);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(Map.of(
-                            "status", "success",
-                            "message", "Destination created successfully.",
-                            "destinationId", savedDestination.getDestinationId()
-                    ));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of(
-                            "status", "error",
-                            "message", "Failed to create destination. " + e.getMessage()
-                    ));
-        }
+    public ResponseEntity<ApiResponse<Destination>> createDestination(@RequestBody DestinationRequest request) {
+        Destination savedDestination = destinationService.createDestination(request);
+        ApiResponse<Destination> response = ApiResponse.<Destination>builder()
+                .status(HttpStatus.CREATED.value())
+                .message("Destination created successfully.")
+                .data(savedDestination)
+                .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")

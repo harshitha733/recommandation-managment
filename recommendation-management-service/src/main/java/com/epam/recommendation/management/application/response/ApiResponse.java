@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 @Builder
 public record ApiResponse<T>(
-        HttpStatus status,
+        int status,
         String message,
         T data
 ) {}
