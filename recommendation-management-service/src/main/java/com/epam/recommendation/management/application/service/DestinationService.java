@@ -101,8 +101,13 @@ public class DestinationService {
         }
     }
 
-    public void deleteDestinationById(Long destinationId) {
-        destinationRepository.deleteById(destinationId);
-        System.out.println("deleted");
+    public String deleteDestinationById(Long destinationId) {
+
+        if (destinationRepository.existsById(destinationId)) {
+            destinationRepository.deleteById(destinationId);
+            return "Destination with ID " + destinationId + " has been successfully deleted.";
+        } else {
+            throw new EntityNotFoundException("Destination not found with id: " + destinationId);
+        }
     }
 }

@@ -50,9 +50,9 @@ public class DestinationController {
     }
 
     @DeleteMapping("/{destinationId}")
-    public ResponseEntity<Void> deleteDestination(@PathVariable("destinationId") Long destinationId) {
-        destinationService.deleteDestinationById(destinationId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<String> deleteDestination(@PathVariable("destinationId") Long destinationId) {
+        String response=destinationService.deleteDestinationById(destinationId);
+        return ResponseEntity.ok(response);
     }
 
 
