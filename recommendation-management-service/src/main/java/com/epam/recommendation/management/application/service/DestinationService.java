@@ -1,10 +1,13 @@
 package com.epam.recommendation.management.application.service;
 
+import com.epam.recommendation.management.application.dto.DestinationDetailsDTO;
+import com.epam.recommendation.management.application.dto.DestinationListDTO;
 import com.epam.recommendation.management.application.dto.DestinationRequest;
 import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.entity.Country;
 import com.epam.recommendation.management.application.exception.EntityNotFoundException;
+import com.epam.recommendation.management.application.exception.ResourceNotFoundException;
 import com.epam.recommendation.management.application.repository.DestinationRepository;
 import com.epam.recommendation.management.application.repository.StateRepository;
 import com.epam.recommendation.management.application.repository.CountryRepository;
@@ -16,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class DestinationService {
@@ -57,16 +61,21 @@ public class DestinationService {
         return destinationRepository.save(destination);
     }
 
-    public List<Destination> getDestinationsByStateId(Long stateId){
-        return destinationRepository.findByStateStateId(stateId);
+    public List<DestinationListDTO> getDestinationNamesByStateId(Long stateId){
+        List<Destination> destinationList=destinationRepository.findByStateStateId(stateId).get();
+        if (destinationList.isEmpty()) throw new ResourceNotFoundException("State not found");
+
+        return destinationList.stream()
+                .map(destination -> new DestinationListDTO(destination.getDestinationId(),
+                        destination.getDestinationName(),destination.getImageUrl()))
+                .collect(Collectors.toList());
     }
 
-    public List<Destination> getAllDestinations() {
-        return destinationRepository.findAll();
-    }
-
-    public List<Destination> getAllDestinationsByStateId(Long stateId) {
-        return destinationRepository.findByStateStateId(stateId);
+    public DestinationDetailsDTO getDestinationInformation(Long destinationId){
+        Destination destination = destinationRepository.findById(destinationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Destination not found"));
+        return new DestinationDetailsDTO(destination.getDestinationId(),destination.getDestinationName(),
+                destination.getRating(),destination.getDescription(),destination.getImageUrl());
     }
 
 
