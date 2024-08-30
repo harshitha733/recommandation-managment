@@ -1,12 +1,16 @@
 package com.epam.recommendation.management.application.controller;
 
+import com.epam.recommendation.management.application.dto.StateDto;
 import com.epam.recommendation.management.application.entity.State;
+import com.epam.recommendation.management.application.exception.ResourceNotFoundException;
 import com.epam.recommendation.management.application.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("v1/states")
@@ -21,8 +25,12 @@ public class StateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<State>> getStatesByCountryId(@PathVariable("id") Long countryId){
-        List<State> stateList=stateService.getAllStatesByCountryId(countryId);
-        return  ResponseEntity.ok(stateList);
+    public ResponseEntity<List<StateDto>> getStatesByCountryId(@PathVariable("id") Long countryId){
+        List<StateDto> stateList = stateService.getAllStatesByCountryId(countryId)
+                .orElseThrow(() -> new ResourceNotFoundException("States not found for country ID: " + countryId));
+
+        // Return the list with a 200 OK status
+        return ResponseEntity.ok(stateList);
     }
+
 }
