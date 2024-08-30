@@ -1,5 +1,6 @@
 package com.epam.recommendation.management.application.service;
 
+import com.epam.recommendation.management.application.dto.CountryDto;
 import com.epam.recommendation.management.application.entity.Country;
 import com.epam.recommendation.management.application.repository.CountryRepository;
 
@@ -18,8 +19,15 @@ public class CountryService {
         return countryRepository.save(country);
     }
 
-    public List<Country> getAllCountries(){
-        return countryRepository.findAll();
+    public List<CountryDto> getAllCountries() {
+
+        return countryRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .toList();
+    }
+
+    private CountryDto convertToDTO(Country country) {
+        return new CountryDto(country.getCountryId(),country.getCountryName(),country.getImageUrl());
     }
 
 }

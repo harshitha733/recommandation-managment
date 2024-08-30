@@ -1,5 +1,6 @@
 package com.epam.recommendation.management.application.controller;
 
+import com.epam.recommendation.management.application.dto.CountryDto;
 import com.epam.recommendation.management.application.entity.Country;
 import com.epam.recommendation.management.application.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,18 @@ public class CountryController {
     @Autowired
     private CountryService countryService;
 
+    @GetMapping
+    public ResponseEntity<List<CountryDto>> getCountries(){
+        List<CountryDto> countryList=countryService.getAllCountries();
+        return ResponseEntity.ok(countryList);
+    }
+
 //    @PostMapping
 //    public ResponseEntity<Country> add(@RequestBody Country country){
 //       return ResponseEntity.ok(countryService.addCountry(country));
 //    }
 
-    @GetMapping
-    public ResponseEntity<List<Country>> getCountries(){
-        List<Country> countryList=countryService.getAllCountries();
-        return ResponseEntity.ok(countryList);
-    }
+
 
 
 }
