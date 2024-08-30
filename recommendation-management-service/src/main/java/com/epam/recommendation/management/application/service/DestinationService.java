@@ -56,18 +56,18 @@ public class DestinationService {
 //                    return stateRepository.save(destination.getState());
 //                });
                 .orElseThrow(() -> new EntityNotFoundException("State not found"));
-
+        
         destination.setState(state);
         return destinationRepository.save(destination);
     }
 
-    public List<DestinationListDTO> getDestinationNamesByStateId(Long stateId){
-        List<Destination> destinationList=destinationRepository.findByStateStateId(stateId).get();
+    public List<DestinationListDTO> getDestinationNamesByStateId(Long stateId) {
+        List<Destination> destinationList = destinationRepository.findByStateStateId(stateId).get();
         if (destinationList.isEmpty()) throw new ResourceNotFoundException("State not found");
 
         return destinationList.stream()
                 .map(destination -> new DestinationListDTO(destination.getDestinationId(),
-                        destination.getDestinationName(),destination.getImageUrl()))
+                        destination.getDestinationName(), destination.getImageUrl()))
                 .collect(Collectors.toList());
     }
 
