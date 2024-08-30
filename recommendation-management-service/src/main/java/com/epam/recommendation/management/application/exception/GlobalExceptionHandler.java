@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiResponse<?>> handleEntityNotFoundException(EntityNotFoundException ex) {
-        return new ResponseEntity<>(ApiResponse.<Void>builder().status(HttpStatus.NOT_FOUND).message(ex.getMessage()).build(),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ApiResponse.<Void>builder().status(HttpStatus.NOT_FOUND.value()).message(ex.getMessage()).build(),HttpStatus.NOT_FOUND);
 
     }
 
