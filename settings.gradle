@@ -1,0 +1,4 @@
+rootProject.name = 'travel-recommendation-platform'
+
+include 'user-management-service'
+include 'recommendation-management-service'
