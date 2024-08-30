@@ -39,10 +39,11 @@ public class StateService {
         stateDto.setStateId(state.getStateId());
         stateDto.setStateName(state.getStateName());
         stateDto.setImageUrl(state.getImageUrl());
+        stateDto.setCountry(state.getCountry());
 
-        if (state.getCountry() != null) {
-            stateDto.getCountry().setCountryId(state.getCountry().getCountryId());
-        }
+//        if (state.getCountry() != null) {
+//            stateDto.getCountry().setCountryId(state.getCountry().getCountryId());
+//        }
 
         return stateDto;
     }

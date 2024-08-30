@@ -7,10 +7,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class TravelRecommendationService {
-	@Bean
-	public ModelMapper getbean(){
-		return new ModelMapper();
-	}
 	public static void main(String[] args) {
 		SpringApplication.run(TravelRecommendationService.class, args);
 	}
