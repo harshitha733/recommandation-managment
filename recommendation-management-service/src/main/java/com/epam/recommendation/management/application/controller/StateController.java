@@ -24,8 +24,8 @@ public class StateController {
         return ResponseEntity.ok(stateService.addState(state));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<StateDto>> getStatesByCountryId(@PathVariable("id") Long countryId){
+    @GetMapping("/{countryId}")
+    public ResponseEntity<List<StateDto>> getStatesByCountryId(@PathVariable("countryId") Long countryId){
         List<StateDto> stateList = stateService.getAllStatesByCountryId(countryId)
                 .orElseThrow(() -> new ResourceNotFoundException("States not found for country ID: " + countryId));
 
