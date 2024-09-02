@@ -30,7 +30,6 @@ public class StateController {
         List<StateDto> stateList = stateService.getAllStatesByCountryId(countryId)
                 .orElseThrow(() -> new ResourceNotFoundException("States not found for country ID: " + countryId));
 
-        // Return the list with a 200 OK status
         return ResponseEntity.ok(stateList);
     }
 

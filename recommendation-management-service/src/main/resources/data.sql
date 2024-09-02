@@ -11,7 +11,6 @@ WHERE NOT EXISTS (
 );
 
 
-
 -- Insert 'United States'
 
 INSERT INTO countries (country_name, image_url)
@@ -67,7 +66,6 @@ WHERE NOT EXISTS (
 );
 
 
-
 -- Insert 'Germany'
 
 INSERT INTO countries (country_name, image_url)
@@ -79,7 +77,6 @@ WHERE NOT EXISTS (
     SELECT 1 FROM countries WHERE country_name = 'Germany'
 
 );
-
 
 
 -- Insert 'France'
@@ -95,7 +92,6 @@ WHERE NOT EXISTS (
 );
 
 
-
 -- Insert 'Japan'
 
 INSERT INTO countries (country_name, image_url)
@@ -107,7 +103,6 @@ WHERE NOT EXISTS (
     SELECT 1 FROM countries WHERE country_name = 'Japan'
 
 );
-
 
 
 -- Insert 'China'
@@ -122,8 +117,6 @@ WHERE NOT EXISTS (
 
 );
 
-
-
 -- Insert 'Brazil'
 
 INSERT INTO countries (country_name, image_url)
@@ -135,10 +128,6 @@ WHERE NOT EXISTS (
     SELECT 1 FROM countries WHERE country_name = 'Brazil'
 
 );
-
-
-
-
 
 
 
