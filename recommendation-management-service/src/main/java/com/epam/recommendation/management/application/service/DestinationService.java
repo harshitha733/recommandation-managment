@@ -124,7 +124,7 @@ public class DestinationService {
             destinationRepository.deleteById(destinationId);
             return "Destination with ID " + destinationId + " has been successfully deleted.";
         } else {
-            throw new EntityNotFoundException("Destination not found with id: " + destinationId);
+            throw new ResourceNotFoundException("Destination not found with id: " + destinationId);
         }
     }
 }

@@ -230,4 +230,38 @@ public class DestinationServiceTest {
         verify(destinationRepository, times(1)).findById(originalDestination.getDestinationId());
     }
 
+    @Test
+    void deleteDestinationById_Success() {
+        // Given
+        Long destinationId = 1L;
+
+        when(destinationRepository.existsById(destinationId)).thenReturn(true);
+
+        // When
+        String result = destinationService.deleteDestinationById(destinationId);
+
+        // Then
+        assertEquals("Destination with ID " + destinationId + " has been successfully deleted.", result);
+        verify(destinationRepository, times(1)).deleteById(destinationId);
+    }
+
+    @Test
+    void deleteDestinationById_NotFound() {
+        // Given
+        Long destinationId = 1L;
+
+        when(destinationRepository.existsById(destinationId)).thenReturn(false);
+
+        // When & Then
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+            destinationService.deleteDestinationById(destinationId);
+        });
+
+        assertEquals("Destination not found with id: " + destinationId, exception.getMessage());
+        verify(destinationRepository, never()).deleteById(destinationId);
+    }
+
+
+
+
 }
