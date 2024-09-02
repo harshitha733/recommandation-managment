@@ -7,6 +7,7 @@ import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.response.ApiResponse;
 import com.epam.recommendation.management.application.service.DestinationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,13 @@ public class DestinationController {
     }
 
     @GetMapping("/{stateId}")
-    public ResponseEntity<List<DestinationListDTO>> getDestinations(@PathVariable("stateId") Long stateId){
-        List<DestinationListDTO> destinations=destinationService.getDestinationNamesByStateId(stateId);
-        return  ResponseEntity.ok(destinations);
+    public ResponseEntity<Page<DestinationListDTO>> getDestinationNamesByStateId(
+            @PathVariable Long stateId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "9") int size) {
+
+        Page<DestinationListDTO> destinationPage = destinationService.getDestinationNamesByStateId(stateId, page, size);
+        return ResponseEntity.ok(destinationPage);
     }
 
     @GetMapping("/details/{destinationId}")

@@ -14,6 +14,10 @@ import com.epam.recommendation.management.application.repository.StateRepository
 import com.epam.recommendation.management.application.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -70,14 +74,18 @@ public class DestinationService {
         return destinationRepository.save(destination);
     }
 
-    public List<DestinationListDTO> getDestinationNamesByStateId(Long stateId){
-        List<Destination> destinationList=destinationRepository.findByStateStateId(stateId).get();
-        if (destinationList.isEmpty()) throw new ResourceNotFoundException("State not found");
+    public Page<DestinationListDTO> getDestinationNamesByStateId(Long stateId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Destination> destinationPage = destinationRepository.findByStateStateId(stateId, pageable);
 
-        return destinationList.stream()
+        if (destinationPage.isEmpty()) throw new ResourceNotFoundException("No destinations found");
+
+        List<DestinationListDTO> destinationList = destinationPage.stream()
                 .map(destination -> new DestinationListDTO(destination.getDestinationId(),
-                        destination.getDestinationName(),destination.getImageUrl()))
+                        destination.getDestinationName(), destination.getImageUrl()))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(destinationList, pageable, destinationPage.getTotalElements());
     }
 
     public DestinationDetailsDTO getDestinationInformation(Long destinationId){
