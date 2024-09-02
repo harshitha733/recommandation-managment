@@ -8,6 +8,8 @@ import com.epam.recommendation.management.application.repository.StateRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,4 +58,9 @@ public class StateService {
                 .collect(Collectors.toList());
         return stateDTOs.isEmpty() ? Optional.empty() : Optional.of(stateDTOs);
     }
+
+    public Page<State> getStatesByCountryWithPagination(Long countryId, Pageable pageable) {
+        return stateRepository.findByCountry_CountryId(countryId, pageable);
+    }
+
 }

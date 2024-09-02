@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @CrossOrigin
 @RestController
@@ -31,6 +34,15 @@ public class StateController {
                 .orElseThrow(() -> new ResourceNotFoundException("States not found for country ID: " + countryId));
 
         return ResponseEntity.ok(stateList);
+    }
+
+    @GetMapping("/byCountry")
+    public Page<State> getStatesByCountryWithPagination(
+            @RequestParam("countryId") Long countryId,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10")  int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return stateService.getStatesByCountryWithPagination(countryId, pageable);
     }
 
 }
