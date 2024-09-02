@@ -6,6 +6,7 @@ import com.epam.recommendation.management.application.dto.DestinationRequest;
 import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.entity.Country;
+import com.epam.recommendation.management.application.exception.DestinationAlreadyExistsException;
 import com.epam.recommendation.management.application.exception.EntityNotFoundException;
 import com.epam.recommendation.management.application.exception.ResourceNotFoundException;
 import com.epam.recommendation.management.application.repository.DestinationRepository;
@@ -56,18 +57,26 @@ public class DestinationService {
 //                    return stateRepository.save(destination.getState());
 //                });
                 .orElseThrow(() -> new EntityNotFoundException("State not found"));
-        
+
+        boolean destinationExists= destinationRepository.existsByDestinationNameAndStateStateNameAndStateCountryCountryName(
+                destination.getDestinationName(), state.getStateName(), country.getCountryName()
+        );
+
+        if(destinationExists){
+            throw new DestinationAlreadyExistsException("Destination already exists");
+        }
+
         destination.setState(state);
         return destinationRepository.save(destination);
     }
 
-    public List<DestinationListDTO> getDestinationNamesByStateId(Long stateId) {
-        List<Destination> destinationList = destinationRepository.findByStateStateId(stateId).get();
+    public List<DestinationListDTO> getDestinationNamesByStateId(Long stateId){
+        List<Destination> destinationList=destinationRepository.findByStateStateId(stateId).get();
         if (destinationList.isEmpty()) throw new ResourceNotFoundException("State not found");
 
         return destinationList.stream()
                 .map(destination -> new DestinationListDTO(destination.getDestinationId(),
-                        destination.getDestinationName(), destination.getImageUrl()))
+                        destination.getDestinationName(),destination.getImageUrl()))
                 .collect(Collectors.toList());
     }
 
