@@ -23,20 +23,20 @@ public class StateController {
     @Autowired
     private StateService stateService;
 
-    @PostMapping
-    public ResponseEntity<State> add(@RequestBody State state){
-        return ResponseEntity.ok(stateService.addState(state));
-    }
+//    @PostMapping
+//    public ResponseEntity<State> add(@RequestBody State state){
+//        return ResponseEntity.ok(stateService.addState(state));
+//    }
 
-    @GetMapping("/{countryId}")
-    public ResponseEntity<List<StateDto>> getStatesByCountryId(@PathVariable("countryId") Long countryId){
-        List<StateDto> stateList = stateService.getAllStatesByCountryId(countryId)
-                .orElseThrow(() -> new ResourceNotFoundException("States not found for country ID: " + countryId));
+//    @GetMapping("/{countryId}")
+//    public ResponseEntity<List<StateDto>> getStatesByCountryId(@PathVariable("countryId") Long countryId){
+//        List<StateDto> stateList = stateService.getAllStatesByCountryId(countryId)
+//                .orElseThrow(() -> new ResourceNotFoundException("States not found for country ID: " + countryId));
+//
+//        return ResponseEntity.ok(stateList);
+//    }
 
-        return ResponseEntity.ok(stateList);
-    }
-
-    @GetMapping("/byCountry")
+    @GetMapping("byCountry")
     public Page<State> getStatesByCountryWithPagination(
             @RequestParam("countryId") Long countryId,
             @RequestParam(value = "page", defaultValue = "0") int page,

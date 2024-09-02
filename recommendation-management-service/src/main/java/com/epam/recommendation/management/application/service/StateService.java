@@ -24,13 +24,13 @@ public class StateService {
     @Autowired
     private CountryRepository countryRepository;
 
-    public State addState(State state) {
-        Country country = countryRepository.findByCountryName(state.getCountry().getCountryName())
-                .orElseGet(() -> countryRepository.save(state.getCountry()));
-        state.setCountry(country);
-
-        return stateRepository.save(state);
-    }
+//    public State addState(State state) {
+//        Country country = countryRepository.findByCountryName(state.getCountry().getCountryName())
+//                .orElseGet(() -> countryRepository.save(state.getCountry()));
+//        state.setCountry(country);
+//
+//        return stateRepository.save(state);
+//    }
 
     public StateDto convertToDTO(State state) {
         if (state == null) {
@@ -49,15 +49,15 @@ public class StateService {
 
         return stateDto;
     }
-    public Optional<List<StateDto>> getAllStatesByCountryId(Long countryId) {
-        // Retrieve the list of states by country ID
-        List<State> states = stateRepository.findByCountryCountryId(countryId);
-
-        List<StateDto> stateDTOs = states.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-        return stateDTOs.isEmpty() ? Optional.empty() : Optional.of(stateDTOs);
-    }
+//    public Optional<List<StateDto>> getAllStatesByCountryId(Long countryId) {
+//        // Retrieve the list of states by country ID
+//        List<State> states = stateRepository.findByCountryCountryId(countryId);
+//
+//        List<StateDto> stateDTOs = states.stream()
+//                .map(this::convertToDTO)
+//                .collect(Collectors.toList());
+//        return stateDTOs.isEmpty() ? Optional.empty() : Optional.of(stateDTOs);
+//    }
 
     public Page<State> getStatesByCountryWithPagination(Long countryId, Pageable pageable) {
         return stateRepository.findByCountry_CountryId(countryId, pageable);
