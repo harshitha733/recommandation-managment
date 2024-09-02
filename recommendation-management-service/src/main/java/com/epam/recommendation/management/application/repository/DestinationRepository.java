@@ -12,4 +12,6 @@ public interface DestinationRepository extends JpaRepository<Destination,Long> {
 
     Optional<List<Destination>> findByStateStateId(Long stateId);
 
+    boolean existsByDestinationNameAndStateStateNameAndStateCountryCountryName(String stateName, String countryName, String destinationName);
+
 }

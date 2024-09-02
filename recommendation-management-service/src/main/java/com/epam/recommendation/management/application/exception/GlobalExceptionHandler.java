@@ -38,4 +38,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message",ex.getMessage()));
 
     }
+
+    @ExceptionHandler(DestinationAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<?>> handleDestinationAlreadyExistsException(DestinationAlreadyExistsException ex) {
+        return new ResponseEntity<>(ApiResponse.<Void>builder().status(HttpStatus.CONFLICT.value()).message(ex.getMessage()).build(),HttpStatus.CONFLICT);
+    }
 }
