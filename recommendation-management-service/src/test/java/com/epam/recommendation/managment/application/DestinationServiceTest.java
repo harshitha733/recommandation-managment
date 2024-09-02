@@ -1,11 +1,14 @@
 package com.epam.recommendation.managment.application;
 
+import com.epam.recommendation.management.application.dto.DestinationDetailsDTO;
+import com.epam.recommendation.management.application.dto.DestinationListDTO;
 import com.epam.recommendation.management.application.dto.DestinationRequest;
 import com.epam.recommendation.management.application.entity.Country;
 import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.exception.DestinationAlreadyExistsException;
 import com.epam.recommendation.management.application.exception.EntityNotFoundException;
+import com.epam.recommendation.management.application.exception.ResourceNotFoundException;
 import com.epam.recommendation.management.application.repository.CountryRepository;
 import com.epam.recommendation.management.application.repository.DestinationRepository;
 import com.epam.recommendation.management.application.repository.StateRepository;
@@ -17,11 +20,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,6 +77,7 @@ public class DestinationServiceTest {
         originalDestination.setDestinationId(1L);
         originalDestination.setDestinationName("Bangalore");
         originalDestination.setDescription("great place");
+        originalDestination.setImageUrl("https://example.com/bangalore.jpg");
         originalDestination.setState(state);
         originalDestination.setRating(4.5);
     }
@@ -158,6 +164,70 @@ public class DestinationServiceTest {
         assertThrows(ResponseStatusException.class, () -> {
             destinationService.updateDestination(destinationId, updates);
         });
+    }
+
+
+    @Test
+    public void testGetDestinationNamesByStateId_ReturnsDestinationList() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Destination> destinations = Arrays.asList(originalDestination);
+        Page<Destination> destinationPage = new PageImpl<>(destinations, pageable, destinations.size());
+
+        when(destinationRepository.findByStateStateId(state.getStateId(), pageable))
+                .thenReturn(destinationPage);
+
+        Page<DestinationListDTO> result = destinationService.getDestinationNamesByStateId(state.getStateId(), 0, 10);
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Bangalore", result.getContent().get(0).getDestinationName());
+    }
+
+    @Test
+    public void testGetDestinationNamesByStateId_InvalidPageNumber_ThrowsException() {
+        Long stateId = 1L;
+        int invalidPage = -1;
+        int size = 2;
+
+        assertThrows(IllegalArgumentException.class, () ->
+                destinationService.getDestinationNamesByStateId(stateId, invalidPage, size)
+        );
+    }
+
+    @Test
+    void testGetDestinationNamesByStateId_EmptyResults() {
+        Pageable pageable = PageRequest.of(0, 10);
+        when(destinationRepository.findByStateStateId(state.getStateId(), pageable)).thenReturn(Page.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            destinationService.getDestinationNamesByStateId(state.getStateId(), 0, 10);
+        });
+
+        verify(destinationRepository, times(1)).findByStateStateId(state.getStateId(), pageable);
+    }
+
+    @Test
+    void testGetDestinationInformation_Found() {
+        when(destinationRepository.findById(originalDestination.getDestinationId()))
+                .thenReturn(java.util.Optional.of(originalDestination));
+
+        DestinationDetailsDTO result = destinationService.getDestinationInformation(originalDestination.getDestinationId());
+
+        assertEquals(originalDestination.getDestinationName(), result.getDestinationName());
+        assertEquals(originalDestination.getDescription(), result.getDescription());
+        assertEquals(originalDestination.getRating(), result.getRating());
+        verify(destinationRepository, times(1)).findById(originalDestination.getDestinationId());
+    }
+
+    @Test
+    void testGetDestinationInformation_NotFound() {
+        when(destinationRepository.findById(originalDestination.getDestinationId()))
+                .thenReturn(java.util.Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            destinationService.getDestinationInformation(originalDestination.getDestinationId());
+        });
+
+        verify(destinationRepository, times(1)).findById(originalDestination.getDestinationId());
     }
 
 }
