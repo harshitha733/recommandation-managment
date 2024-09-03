@@ -14,9 +14,6 @@ public class StateDto {
     private String stateName;
     private String imageUrl;
 
-//    @JsonIgnore
-//    private Country country;
-// Assuming you only need the country ID
 
 }
 

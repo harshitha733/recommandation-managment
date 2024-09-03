@@ -1,6 +1,7 @@
 package com.epam.recommendation.management.application.controller;
 
 import com.epam.recommendation.management.application.dto.CountryDto;
+import com.epam.recommendation.management.application.service.CountryService;
 import com.epam.recommendation.management.application.service.CountryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,10 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("v1/countries")
 public class CountryController {
 
-    private final CountryServiceImpl countryService;
+    private final CountryService countryService;
 
-
-    public CountryController(CountryServiceImpl countryService) {
+    public CountryController(CountryService countryService) {
         this.countryService = countryService;
     }
 

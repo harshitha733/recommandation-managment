@@ -29,14 +29,20 @@ import java.util.stream.Collectors;
 @Service
 public class DestinationServiceImpl implements DestinationService{
 
-    @Autowired
-    private DestinationRepository destinationRepository;
 
-    @Autowired
-    private StateRepository stateRepository;
+    private final DestinationRepository destinationRepository;
 
-    @Autowired
-    private CountryRepository countryRepository;
+
+    private final StateRepository stateRepository;
+
+
+    private final CountryRepository countryRepository;
+
+    public DestinationServiceImpl(DestinationRepository destinationRepository, StateRepository stateRepository, CountryRepository countryRepository) {
+        this.destinationRepository = destinationRepository;
+        this.stateRepository = stateRepository;
+        this.countryRepository = countryRepository;
+    }
 
     public Destination convertToEntity(DestinationRequest request){
         Destination destination =new Destination();
@@ -96,7 +102,7 @@ public class DestinationServiceImpl implements DestinationService{
     }
 
 
-    public Destination updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails) {
+    public DestinationDetailsDTO updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails) {
         Destination updatingDestination = destinationRepository.findById(destinationId).orElseThrow(() -> new EntityNotFoundException("No destination found with the id "+destinationId));
         destinationUpdateDetails.forEach((key, value) -> {
             try {
@@ -112,7 +118,8 @@ public class DestinationServiceImpl implements DestinationService{
 
         });
         try {
-            return destinationRepository.save(updatingDestination);
+            destinationRepository.save(updatingDestination);
+            return new DestinationDetailsDTO(updatingDestination.getDestinationId(), updatingDestination.getDestinationName(), updatingDestination.getRating(), updatingDestination.getDescription(), updatingDestination.getImageUrl());
         } catch (DataIntegrityViolationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Data integrity violation", e);
         }

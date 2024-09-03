@@ -1,6 +1,8 @@
 package com.epam.recommendation.management.application.controller;
 
+import com.epam.recommendation.management.application.dto.StateDto;
 import com.epam.recommendation.management.application.entity.State;
+import com.epam.recommendation.management.application.service.StateService;
 import com.epam.recommendation.management.application.service.StateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,24 +16,15 @@ import org.springframework.data.domain.PageRequest;
 @RequestMapping("v1/states")
 public class StateController {
 
-    @Autowired
-    private StateServiceImpl stateService;
 
-//    @PostMapping
-//    public ResponseEntity<State> add(@RequestBody State state){
-//        return ResponseEntity.ok(stateService.addState(state));
-//    }
+    private final StateService stateService;
 
-//    @GetMapping("/{countryId}")
-//    public ResponseEntity<List<StateDto>> getStatesByCountryId(@PathVariable("countryId") Long countryId){
-//        List<StateDto> stateList = stateService.getAllStatesByCountryId(countryId)
-//                .orElseThrow(() -> new ResourceNotFoundException("States not found for country ID: " + countryId));
-//
-//        return ResponseEntity.ok(stateList);
-//    }
+    public StateController(StateService stateService) {
+        this.stateService = stateService;
+    }
 
     @GetMapping("{countryId}")
-    public Page<State> getStatesByCountryWithPagination(
+    public Page<StateDto> getStatesByCountryWithPagination(
             @PathVariable(name="countryId") Long countryId,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10")  int size) {

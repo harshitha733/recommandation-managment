@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface DestinationService {
     String deleteDestinationById(Long destinationId);
-    Destination updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails);
+    DestinationDetailsDTO updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails);
     DestinationDetailsDTO getDestinationInformation(Long destinationId);
     Page<DestinationListDTO> getDestinationNamesByStateId(Long stateId, int page, int size);
     Destination createDestination(DestinationRequest request);
