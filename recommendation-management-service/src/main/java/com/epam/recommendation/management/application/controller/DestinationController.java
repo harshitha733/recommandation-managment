@@ -17,7 +17,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping("v1/destinations")
+@RequestMapping("v1/")
 public class DestinationController {
 
 
@@ -27,8 +27,7 @@ public class DestinationController {
         this.destinationService = destinationService;
     }
 
-
-    @GetMapping("/{stateId}")
+    @GetMapping("states/{stateId}/destinations")
     public ApiResponse<Page<DestinationListDTO>> getDestinationNamesByStateId(
             @PathVariable("stateId") Long stateId,
             @RequestParam(value="page",defaultValue = "0") int page,
@@ -42,7 +41,7 @@ public class DestinationController {
                 .build();
     }
 
-    @GetMapping("/details/{destinationId}")
+    @GetMapping("destinations/{destinationId}/details")
     public ApiResponse<DestinationDetailsDTO> getDestination(@PathVariable("destinationId") Long destinationId){
         DestinationDetailsDTO destination=destinationService.getDestinationInformation(destinationId);
 
@@ -53,7 +52,7 @@ public class DestinationController {
                 .build();
     }
 
-    @PostMapping
+    @PostMapping("destinations")
     public ApiResponse<DestinationDetailsDTO> createDestination(@RequestBody DestinationRequest request) {
         DestinationDetailsDTO savedDestination = destinationService.createDestination(request);
         return ApiResponse.<DestinationDetailsDTO>builder()
@@ -63,7 +62,7 @@ public class DestinationController {
                 .build();
     }
 
-    @PatchMapping("{destinationId}")
+    @PatchMapping("destinations/{destinationId}")
     public ApiResponse<DestinationDetailsDTO> updateDestination(@PathVariable("destinationId") Long destinationId,@RequestBody Map<String,Object> destinationUpdateDetails){
         DestinationDetailsDTO destination=destinationService.updateDestination(destinationId, destinationUpdateDetails);
         return ApiResponse.<DestinationDetailsDTO>builder()
@@ -73,7 +72,7 @@ public class DestinationController {
                 .build();
     }
 
-    @DeleteMapping("/{destinationId}")
+    @DeleteMapping("destinations/{destinationId}")
     public ApiResponse<String> deleteDestination(@PathVariable("destinationId") Long destinationId) {
         String response=destinationService.deleteDestinationById(destinationId);
         return ApiResponse.<String>builder()

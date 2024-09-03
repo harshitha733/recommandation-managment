@@ -16,7 +16,7 @@ import org.springframework.data.domain.PageRequest;
 
 @CrossOrigin
 @RestController
-@RequestMapping("v1/states")
+@RequestMapping("v1/")
 public class StateController {
 
 
@@ -26,7 +26,7 @@ public class StateController {
         this.stateService = stateService;
     }
 
-    @GetMapping("{countryId}")
+    @GetMapping("countries/{countryId}/states")
     public ApiResponse<Page<StateDto>> getStatesByCountryWithPagination(
             @PathVariable(name = "countryId") Long countryId,
             @RequestParam(value = "page", defaultValue = "0") int page,
