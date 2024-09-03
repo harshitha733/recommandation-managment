@@ -35,12 +35,10 @@ public class StateController {
         Pageable pageable = PageRequest.of(page, size);
         Page<StateDto> statesPage = stateService.getStatesByCountryWithPagination(countryId, pageable);
 
-        ApiResponse<Page<StateDto>> response = ApiResponse.<Page<StateDto>>builder()
+        return ApiResponse.<Page<StateDto>>builder()
                 .status(HttpStatus.OK.value())
                 .message("States retrieved successfully.")
                 .data(statesPage)
                 .build();
-
-        return response;
     }
 }

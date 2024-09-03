@@ -31,12 +31,11 @@ public class CountryController {
         Pageable pageable = PageRequest.of(page, size);
         Page<CountryDto> countryList = countryService.getAllCountries(pageable);
 
-        ApiResponse<Page<CountryDto>> response = ApiResponse.<Page<CountryDto>>builder()
+        return ApiResponse.<Page<CountryDto>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Countries retrieved successfully.")
                 .data(countryList)
                 .build();
-        return response;
     }
 
 }

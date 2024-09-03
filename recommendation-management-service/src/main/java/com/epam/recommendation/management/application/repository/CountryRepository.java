@@ -14,5 +14,4 @@ public interface CountryRepository extends JpaRepository<Country,Long> {
 
     List<Country> findAll();
 
-
 }

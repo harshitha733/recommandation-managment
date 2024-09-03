@@ -28,43 +28,58 @@ public class DestinationController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Destination>> createDestination(@RequestBody DestinationRequest request) {
+    public ApiResponse<Destination> createDestination(@RequestBody DestinationRequest request) {
         Destination savedDestination = destinationService.createDestination(request);
-        ApiResponse<Destination> response = ApiResponse.<Destination>builder()
+        return ApiResponse.<Destination>builder()
                 .status(HttpStatus.CREATED.value())
                 .message("Destination created successfully.")
                 .data(savedDestination)
                 .build();
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{stateId}")
-    public ResponseEntity<Page<DestinationListDTO>> getDestinationNamesByStateId(
+    public ApiResponse<Page<DestinationListDTO>> getDestinationNamesByStateId(
             @PathVariable("stateId") Long stateId,
             @RequestParam(value="page",defaultValue = "0") int page,
-            @RequestParam(value="size",defaultValue = "9") int size) {
+            @RequestParam(value="size",defaultValue = "8") int size) {
 
         Page<DestinationListDTO> destinationPage = destinationService.getDestinationNamesByStateId(stateId, page, size);
-        return ResponseEntity.ok(destinationPage);
+        return ApiResponse.<Page<DestinationListDTO>>builder()
+                .status(HttpStatus.OK.value())
+                .message("successfully retreived the destinations of state")
+                .data(destinationPage)
+                .build();
     }
 
     @GetMapping("/details/{destinationId}")
-    public ResponseEntity<DestinationDetailsDTO> getDestination(@PathVariable("destinationId") Long destinationId){
+    public ApiResponse<DestinationDetailsDTO> getDestination(@PathVariable("destinationId") Long destinationId){
         DestinationDetailsDTO destination=destinationService.getDestinationInformation(destinationId);
-        return  ResponseEntity.ok(destination);
+
+        return ApiResponse.<DestinationDetailsDTO>builder()
+                .status(HttpStatus.OK.value())
+                .message("successfully retreived the destination details")
+                .data(destination)
+                .build();
     }
 
     @PatchMapping("{destinationId}")
-    public ResponseEntity<DestinationDetailsDTO> updateDestination(@PathVariable("destinationId") Long destinationId,@RequestBody Map<String,Object> destinationUpdateDetails){
+    public ApiResponse<DestinationDetailsDTO> updateDestination(@PathVariable("destinationId") Long destinationId,@RequestBody Map<String,Object> destinationUpdateDetails){
         DestinationDetailsDTO destination=destinationService.updateDestination(destinationId, destinationUpdateDetails);
-        return ResponseEntity.ok(destination);
+        return ApiResponse.<DestinationDetailsDTO>builder()
+                .status(HttpStatus.OK.value())
+                .message("updated the destination details")
+                .data(destination)
+                .build();
     }
 
     @DeleteMapping("/{destinationId}")
-    public ResponseEntity<String> deleteDestination(@PathVariable("destinationId") Long destinationId) {
+    public ApiResponse<String> deleteDestination(@PathVariable("destinationId") Long destinationId) {
         String response=destinationService.deleteDestinationById(destinationId);
-        return ResponseEntity.ok(response);
+        return ApiResponse.<String>builder()
+                .status(HttpStatus.OK.value())
+                .message("deleted the destination successfully")
+                .data(response)
+                .build();
     }
-
 
 }
