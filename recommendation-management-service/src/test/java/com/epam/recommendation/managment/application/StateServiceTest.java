@@ -1,5 +1,6 @@
 package com.epam.recommendation.managment.application;
 
+import com.epam.recommendation.management.application.dto.StateDto;
 import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.repository.StateRepository;
 import com.epam.recommendation.management.application.repository.CountryRepository;
@@ -53,7 +54,7 @@ public class StateServiceTest {
         when(stateRepository.findByCountry_CountryId(1L, pageable)).thenReturn(page);
 
         // Call service method
-        Page<State> result = stateService.getStatesByCountryWithPagination(1L, pageable);
+        Page<StateDto> result = stateService.getStatesByCountryWithPagination(1L, pageable);
 
         // Verify results
         assertEquals(2, result.getTotalElements());
@@ -70,7 +71,7 @@ public class StateServiceTest {
         when(stateRepository.findByCountry_CountryId(1L, pageable)).thenReturn(page);
 
         // Call service method
-        Page<State> result = stateService.getStatesByCountryWithPagination(1L, pageable);
+        Page<StateDto> result = stateService.getStatesByCountryWithPagination(1L, pageable);
 
         // Verify results
         assertEquals(0, result.getTotalElements());
@@ -86,7 +87,7 @@ public class StateServiceTest {
         when(stateRepository.findByCountry_CountryId(999L, pageable)).thenReturn(page);
 
         // Call service method
-        Page<State> result = stateService.getStatesByCountryWithPagination(999L, pageable);
+        Page<StateDto> result = stateService.getStatesByCountryWithPagination(999L, pageable);
 
         // Verify results
         assertEquals(0, result.getTotalElements());

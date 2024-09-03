@@ -119,7 +119,7 @@ public class DestinationServiceTest {
         given(destinationRepository.findById(originalDestination.getDestinationId())).willReturn(Optional.of(originalDestination));
         given(destinationRepository.save(any(Destination.class))).willReturn(originalDestination);
 
-        Destination result = destinationService.updateDestination(originalDestination.getDestinationId(), updates);
+        DestinationDetailsDTO result = destinationService.updateDestination(originalDestination.getDestinationId(), updates);
 
         assertThat(result.getDestinationName()).isEqualTo("New Name");
         assertThat(result.getDescription()).isEqualTo("New Description");
