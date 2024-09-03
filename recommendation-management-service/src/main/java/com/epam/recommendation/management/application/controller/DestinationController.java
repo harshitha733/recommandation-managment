@@ -5,14 +5,13 @@ import com.epam.recommendation.management.application.dto.DestinationListDTO;
 import com.epam.recommendation.management.application.dto.DestinationRequest;
 import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.response.ApiResponse;
-import com.epam.recommendation.management.application.service.DestinationService;
+import com.epam.recommendation.management.application.service.DestinationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -21,7 +20,7 @@ import java.util.Map;
 public class DestinationController {
 
     @Autowired
-    private DestinationService destinationService;
+    private DestinationServiceImpl destinationService;
     @PostMapping
     public ResponseEntity<ApiResponse<Destination>> createDestination(@RequestBody DestinationRequest request) {
         Destination savedDestination = destinationService.createDestination(request);

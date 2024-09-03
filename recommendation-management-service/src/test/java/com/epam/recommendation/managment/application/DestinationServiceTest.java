@@ -12,7 +12,7 @@ import com.epam.recommendation.management.application.exception.ResourceNotFound
 import com.epam.recommendation.management.application.repository.CountryRepository;
 import com.epam.recommendation.management.application.repository.DestinationRepository;
 import com.epam.recommendation.management.application.repository.StateRepository;
-import com.epam.recommendation.management.application.service.DestinationService;
+import com.epam.recommendation.management.application.service.DestinationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,7 +47,7 @@ public class DestinationServiceTest {
     private CountryRepository countryRepository;
 
     @InjectMocks
-    private DestinationService destinationService;
+    private DestinationServiceImpl destinationService;
 
     private DestinationRequest destinationRequest;
     private State state;

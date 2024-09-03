@@ -1,20 +1,15 @@
 package com.epam.recommendation.managment.application;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 import com.epam.recommendation.management.application.controller.DestinationController;
-import com.epam.recommendation.management.application.entity.Destination;
-import com.epam.recommendation.management.application.service.DestinationService;
-import org.junit.jupiter.api.Test;
+import com.epam.recommendation.management.application.service.DestinationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(DestinationController.class)
@@ -24,7 +19,7 @@ public class DestinationControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private DestinationService destinationService;
+    private DestinationServiceImpl destinationService;
 
 //    @Test
 //    public void testUpdateDestination() throws Exception {

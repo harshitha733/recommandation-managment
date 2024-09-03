@@ -1,16 +1,10 @@
 package com.epam.recommendation.management.application.controller;
 
-import com.epam.recommendation.management.application.dto.StateDto;
 import com.epam.recommendation.management.application.entity.State;
-import com.epam.recommendation.management.application.exception.ResourceNotFoundException;
-import com.epam.recommendation.management.application.service.StateService;
+import com.epam.recommendation.management.application.service.StateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 public class StateController {
 
     @Autowired
-    private StateService stateService;
+    private StateServiceImpl stateService;
 
 //    @PostMapping
 //    public ResponseEntity<State> add(@RequestBody State state){

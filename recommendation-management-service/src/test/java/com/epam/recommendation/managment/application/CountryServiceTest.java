@@ -3,7 +3,7 @@ package com.epam.recommendation.managment.application;
 import com.epam.recommendation.management.application.dto.CountryDto;
 import com.epam.recommendation.management.application.entity.Country;
 import com.epam.recommendation.management.application.repository.CountryRepository;
-import com.epam.recommendation.management.application.service.CountryService;
+import com.epam.recommendation.management.application.service.CountryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,7 +27,7 @@ class CountryServiceTest {
     private CountryRepository countryRepository;
 
     @InjectMocks
-    private CountryService countryService;
+    private CountryServiceImpl countryService;
 
     @BeforeEach
     void setUp() {

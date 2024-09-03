@@ -3,7 +3,7 @@ package com.epam.recommendation.managment.application;
 import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.repository.StateRepository;
 import com.epam.recommendation.management.application.repository.CountryRepository;
-import com.epam.recommendation.management.application.service.StateService;
+import com.epam.recommendation.management.application.service.StateServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,7 +29,7 @@ public class StateServiceTest {
     private CountryRepository countryRepository;
 
     @InjectMocks
-    private StateService stateService;
+    private StateServiceImpl stateService;
 
     public StateServiceTest() {
         MockitoAnnotations.openMocks(this);
@@ -92,6 +91,7 @@ public class StateServiceTest {
         // Verify results
         assertEquals(0, result.getTotalElements());
         assertTrue(result.getContent().isEmpty());
+
     }
 
 }
