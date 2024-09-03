@@ -197,7 +197,7 @@ public class DestinationServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         when(destinationRepository.findByStateStateId(state.getStateId(), pageable)).thenReturn(Page.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             destinationService.getDestinationNamesByStateId(state.getStateId(), 0, 10);
         });
 
@@ -222,7 +222,7 @@ public class DestinationServiceTest {
         when(destinationRepository.findById(originalDestination.getDestinationId()))
                 .thenReturn(java.util.Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             destinationService.getDestinationInformation(originalDestination.getDestinationId());
         });
 
@@ -252,7 +252,7 @@ public class DestinationServiceTest {
         when(destinationRepository.existsById(destinationId)).thenReturn(false);
 
         // When & Then
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             destinationService.deleteDestinationById(destinationId);
         });
 
