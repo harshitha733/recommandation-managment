@@ -36,9 +36,9 @@ public class StateController {
 //        return ResponseEntity.ok(stateList);
 //    }
 
-    @GetMapping("byCountry")
+    @GetMapping("{countryId}")
     public Page<State> getStatesByCountryWithPagination(
-            @RequestParam("countryId") Long countryId,
+            @PathVariable(name="countryId") Long countryId,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10")  int size) {
         Pageable pageable = PageRequest.of(page, size);
