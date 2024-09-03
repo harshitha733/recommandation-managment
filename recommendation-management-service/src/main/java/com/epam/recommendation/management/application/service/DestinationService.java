@@ -13,5 +13,5 @@ public interface DestinationService {
     DestinationDetailsDTO updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails);
     DestinationDetailsDTO getDestinationInformation(Long destinationId);
     Page<DestinationListDTO> getDestinationNamesByStateId(Long stateId, int page, int size);
-    Destination createDestination(DestinationRequest request);
+    DestinationDetailsDTO createDestination(DestinationRequest request);
 }

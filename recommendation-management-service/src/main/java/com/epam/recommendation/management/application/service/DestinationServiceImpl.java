@@ -52,7 +52,7 @@ public class DestinationServiceImpl implements DestinationService{
         return destination;
     }
 
-    public Destination createDestination(DestinationRequest request) {
+    public DestinationDetailsDTO createDestination(DestinationRequest request) {
         Destination destination=convertToEntity(request);
 
         Country country = countryRepository.findByCountryName(destination.getState().getCountry().getCountryName())
@@ -75,7 +75,8 @@ public class DestinationServiceImpl implements DestinationService{
         }
 
         destination.setState(state);
-        return destinationRepository.save(destination);
+        Destination updatedDestination =destinationRepository.save(destination);
+        return new DestinationDetailsDTO(updatedDestination.getDestinationId(), updatedDestination.getDestinationName(), updatedDestination.getRating(), updatedDestination.getDescription(), updatedDestination.getImageUrl());
     }
 
     public Page<DestinationListDTO> getDestinationNamesByStateId(Long stateId, int page, int size) {

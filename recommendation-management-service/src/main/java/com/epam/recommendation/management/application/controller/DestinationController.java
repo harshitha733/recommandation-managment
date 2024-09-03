@@ -27,15 +27,6 @@ public class DestinationController {
         this.destinationService = destinationService;
     }
 
-    @PostMapping
-    public ApiResponse<Destination> createDestination(@RequestBody DestinationRequest request) {
-        Destination savedDestination = destinationService.createDestination(request);
-        return ApiResponse.<Destination>builder()
-                .status(HttpStatus.CREATED.value())
-                .message("Destination created successfully.")
-                .data(savedDestination)
-                .build();
-    }
 
     @GetMapping("/{stateId}")
     public ApiResponse<Page<DestinationListDTO>> getDestinationNamesByStateId(
@@ -59,6 +50,16 @@ public class DestinationController {
                 .status(HttpStatus.OK.value())
                 .message("successfully retreived the destination details")
                 .data(destination)
+                .build();
+    }
+
+    @PostMapping
+    public ApiResponse<DestinationDetailsDTO> createDestination(@RequestBody DestinationRequest request) {
+        DestinationDetailsDTO savedDestination = destinationService.createDestination(request);
+        return ApiResponse.<DestinationDetailsDTO>builder()
+                .status(HttpStatus.CREATED.value())
+                .message("Destination created successfully.")
+                .data(savedDestination)
                 .build();
     }
 
