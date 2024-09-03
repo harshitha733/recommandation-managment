@@ -37,7 +37,7 @@ public class DestinationController {
         Page<DestinationListDTO> destinationPage = destinationService.getDestinationNamesByStateId(stateId, page, size);
         return ApiResponse.<Page<DestinationListDTO>>builder()
                 .status(HttpStatus.OK.value())
-                .message("successfully retreived the destinations of state")
+                .message("successfully retrieved the destinations of state")
                 .data(destinationPage)
                 .build();
     }
@@ -48,7 +48,7 @@ public class DestinationController {
 
         return ApiResponse.<DestinationDetailsDTO>builder()
                 .status(HttpStatus.OK.value())
-                .message("successfully retreived the destination details")
+                .message("successfully retrieved the destination details")
                 .data(destination)
                 .build();
     }

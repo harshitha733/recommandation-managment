@@ -14,29 +14,29 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiResponse<?>> handleEntityNotFoundException(EntityNotFoundException ex) {
-        return new ResponseEntity<>(ApiResponse.<Void>builder().status(HttpStatus.NOT_FOUND.value()).message(ex.getMessage()).build(),HttpStatus.NOT_FOUND);
+    public ApiResponse<?> handleEntityNotFoundException(EntityNotFoundException ex) {
+        return ApiResponse.<Void>builder().status(HttpStatus.NOT_FOUND.value()).message(ex.getMessage()).build();
 
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiResponse<?>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return new ResponseEntity<>(ApiResponse.<String>builder().status(HttpStatus.BAD_REQUEST.value()).message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
+    public ApiResponse<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ApiResponse.<String>builder().status(HttpStatus.BAD_REQUEST.value()).message(ex.getMessage()).build();
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse<?>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        return new ResponseEntity<>(ApiResponse.<String>builder().status(HttpStatus.CONFLICT.value()).message(ex.getMessage()).build(), HttpStatus.CONFLICT);
+    public ApiResponse<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        return ApiResponse.<String>builder().status(HttpStatus.CONFLICT.value()).message(ex.getMessage()).build();
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<?>> handleGeneralException(Exception ex) {
-        return new ResponseEntity<>(ApiResponse.<String>builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ApiResponse<?> handleGeneralException(Exception ex) {
+        return ApiResponse.<String>builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(ex.getMessage()).build();
     }
 
 
     @ExceptionHandler(DestinationAlreadyExistsException.class)
-    public ResponseEntity<ApiResponse<?>> handleDestinationAlreadyExistsException(DestinationAlreadyExistsException ex) {
-        return new ResponseEntity<>(ApiResponse.<Void>builder().status(HttpStatus.CONFLICT.value()).message(ex.getMessage()).build(),HttpStatus.CONFLICT);
+    public ApiResponse<?> handleDestinationAlreadyExistsException(DestinationAlreadyExistsException ex) {
+        return ApiResponse.<Void>builder().status(HttpStatus.CONFLICT.value()).message(ex.getMessage()).build();
     }
 }
