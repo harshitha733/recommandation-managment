@@ -8,7 +8,6 @@ import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.exception.DestinationAlreadyExistsException;
 import com.epam.recommendation.management.application.exception.EntityNotFoundException;
-import com.epam.recommendation.management.application.exception.ResourceNotFoundException;
 import com.epam.recommendation.management.application.repository.CountryRepository;
 import com.epam.recommendation.management.application.repository.DestinationRepository;
 import com.epam.recommendation.management.application.repository.StateRepository;

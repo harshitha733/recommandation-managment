@@ -1,0 +1,42 @@
+package com.epam.recommendation.management.application.exception.globalexcepitonhandler;
+import com.epam.recommendation.management.application.exception.DestinationAlreadyExistsException;
+import com.epam.recommendation.management.application.exception.EntityNotFoundException;
+import com.epam.recommendation.management.application.response.ApiResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import java.util.Map;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiResponse<?>> handleEntityNotFoundException(EntityNotFoundException ex) {
+        return new ResponseEntity<>(ApiResponse.<Void>builder().status(HttpStatus.NOT_FOUND.value()).message(ex.getMessage()).build(),HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<?>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return new ResponseEntity<>(ApiResponse.<String>builder().status(HttpStatus.BAD_REQUEST.value()).message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponse<?>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        return new ResponseEntity<>(ApiResponse.<String>builder().status(HttpStatus.CONFLICT.value()).message(ex.getMessage()).build(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<?>> handleGeneralException(Exception ex) {
+        return new ResponseEntity<>(ApiResponse.<String>builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    @ExceptionHandler(DestinationAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<?>> handleDestinationAlreadyExistsException(DestinationAlreadyExistsException ex) {
+        return new ResponseEntity<>(ApiResponse.<Void>builder().status(HttpStatus.CONFLICT.value()).message(ex.getMessage()).build(),HttpStatus.CONFLICT);
+    }
+}

@@ -40,9 +40,9 @@ public class DestinationController {
 
     @GetMapping("/{stateId}")
     public ResponseEntity<Page<DestinationListDTO>> getDestinationNamesByStateId(
-            @PathVariable Long stateId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size) {
+            @PathVariable("stateId") Long stateId,
+            @RequestParam(value="page",defaultValue = "0") int page,
+            @RequestParam(value="size",defaultValue = "9") int size) {
 
         Page<DestinationListDTO> destinationPage = destinationService.getDestinationNamesByStateId(stateId, page, size);
         return ResponseEntity.ok(destinationPage);

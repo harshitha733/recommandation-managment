@@ -8,11 +8,9 @@ import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.entity.Country;
 import com.epam.recommendation.management.application.exception.DestinationAlreadyExistsException;
 import com.epam.recommendation.management.application.exception.EntityNotFoundException;
-import com.epam.recommendation.management.application.exception.ResourceNotFoundException;
 import com.epam.recommendation.management.application.repository.DestinationRepository;
 import com.epam.recommendation.management.application.repository.StateRepository;
 import com.epam.recommendation.management.application.repository.CountryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -84,7 +82,7 @@ public class DestinationServiceImpl implements DestinationService{
         Pageable pageable = PageRequest.of(page, size);
         Page<Destination> destinationPage = destinationRepository.findByStateStateId(stateId, pageable);
 
-        if (destinationPage.isEmpty()) throw new ResourceNotFoundException("No destinations found");
+        if (destinationPage.isEmpty()) throw new EntityNotFoundException("No destinations found");
 
         List<DestinationListDTO> destinationList = destinationPage.stream()
                 .map(destination -> new DestinationListDTO(destination.getDestinationId(),
@@ -96,7 +94,7 @@ public class DestinationServiceImpl implements DestinationService{
 
     public DestinationDetailsDTO getDestinationInformation(Long destinationId){
         Destination destination = destinationRepository.findById(destinationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Destination not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Destination not found"));
         return new DestinationDetailsDTO(destination.getDestinationId(),destination.getDestinationName(),
                 destination.getRating(),destination.getDescription(),destination.getImageUrl());
     }
@@ -131,7 +129,7 @@ public class DestinationServiceImpl implements DestinationService{
             destinationRepository.deleteById(destinationId);
             return "Destination with ID " + destinationId + " has been successfully deleted.";
         } else {
-            throw new ResourceNotFoundException("Destination not found with id: " + destinationId);
+            throw new EntityNotFoundException("Destination not found with id: " + destinationId);
         }
     }
 }
