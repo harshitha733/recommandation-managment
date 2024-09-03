@@ -70,6 +70,7 @@ public class DestinationServiceTest {
 
         destination = new Destination();
         destination.setDestinationName("Bangalore");
+        destination.setRating(4.9);
         destination.setState(state);
 
         originalDestination = new Destination();
@@ -89,7 +90,7 @@ public class DestinationServiceTest {
                 anyString(), anyString(), anyString())).thenReturn(false);
         when(destinationRepository.save(any(Destination.class))).thenReturn(destination);
 
-        Destination createdDestination = destinationService.createDestination(destinationRequest);
+        DestinationDetailsDTO createdDestination = destinationService.createDestination(destinationRequest);
 
         assertNotNull(createdDestination);
         assertEquals("Bangalore", createdDestination.getDestinationName());
@@ -111,7 +112,7 @@ public class DestinationServiceTest {
     @Test
     public void testUpdateDestination() {
         Map<String, Object> updates = new HashMap<>();
-        updates.put("name", "New Name");
+        updates.put("destinationName", "New Name");
         updates.put("description", "New Description");
 
         Destination updatedDestination = new Destination();
