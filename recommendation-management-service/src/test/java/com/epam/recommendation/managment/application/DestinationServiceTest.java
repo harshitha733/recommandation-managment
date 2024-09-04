@@ -12,6 +12,7 @@ import com.epam.recommendation.management.application.repository.CountryReposito
 import com.epam.recommendation.management.application.repository.DestinationRepository;
 import com.epam.recommendation.management.application.repository.StateRepository;
 import com.epam.recommendation.management.application.service.DestinationServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +24,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -110,10 +110,8 @@ public class DestinationServiceTest {
     }
 
     @Test
-    public void testUpdateDestination() {
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("destinationName", "New Name");
-        updates.put("description", "New Description");
+    public void testUpdateDestination() throws JsonProcessingException {
+        String updates="{\"destinationName\":\"New Destination Name\",\"description\":\"New Description\",\"imageUrl\":\"http://example.com/new-image.jpg\",\"rating\":4.5}";
 
         Destination updatedDestination = new Destination();
         given(destinationRepository.findById(originalDestination.getDestinationId())).willReturn(Optional.of(originalDestination));
@@ -121,7 +119,7 @@ public class DestinationServiceTest {
 
         DestinationDetailsDTO result = destinationService.updateDestination(originalDestination.getDestinationId(), updates);
 
-        assertThat(result.getDestinationName()).isEqualTo("New Name");
+        assertThat(result.getDestinationName()).isEqualTo("New Destination Name");
         assertThat(result.getDescription()).isEqualTo("New Description");
 
         verify(destinationRepository).save(any(Destination.class));
@@ -130,8 +128,7 @@ public class DestinationServiceTest {
     @Test
     public void testUpdateDestinationNotFound() {
         Long destinationId = 1L;
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("name", "New Name");
+        String updates="{\"destinationName\":\"New Destination Name\",\"description\":\"Updated description of the destination.\",\"imageUrl\":\"http://example.com/new-image.jpg\",\"rating\":4.5}";
 
         given(destinationRepository.findById(destinationId)).willReturn(Optional.empty());
 
@@ -142,12 +139,11 @@ public class DestinationServiceTest {
     @Test
     public void testUpdateDestinationInvalidInputType() {
         Long destinationId = 1L;
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("rating", "Five");  // Invalid type, should be Double
+        String updates="{\"rating\":asd}";
 
         given(destinationRepository.findById(destinationId)).willReturn(Optional.of(originalDestination));
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(JsonProcessingException.class, () -> {
             destinationService.updateDestination(destinationId, updates);
         });
     }
@@ -155,17 +151,15 @@ public class DestinationServiceTest {
     @Test
     public void testUpdateDestinationDataIntegrityViolation() {
         Long destinationId = 1L;
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("name", "New Name");
+        String updates="{\"destinationName\":\"New Destination Name\",\"description\":\"Updated description of the destination.\",\"imageUrl\":\"http://example.com/new-image.jpg\",\"rating\":4.5}";
 
         given(destinationRepository.findById(destinationId)).willReturn(Optional.of(originalDestination));
         given(destinationRepository.save(any(Destination.class))).willThrow(DataIntegrityViolationException.class);
 
-        assertThrows(ResponseStatusException.class, () -> {
+        assertThrows(DataIntegrityViolationException.class, () -> {
             destinationService.updateDestination(destinationId, updates);
         });
     }
-
 
     @Test
     public void testGetDestinationNamesByStateId_ReturnsDestinationList() {

@@ -2,6 +2,7 @@ package com.epam.recommendation.management.application.globalexcepitonhandler;
 import com.epam.recommendation.management.application.exception.DestinationAlreadyExistsException;
 import com.epam.recommendation.management.application.exception.EntityNotFoundException;
 import com.epam.recommendation.management.application.response.ApiResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -20,6 +21,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<?>> handleEntityNotFoundException(EntityNotFoundException ex) {
         return new ResponseEntity<>( ApiResponse.<Void>builder().status(HttpStatus.NOT_FOUND.value()).message(ex.getMessage()).build(),HttpStatus.NOT_FOUND);
 
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public ResponseEntity<ApiResponse<String>> handleJsonProcessingException(JsonProcessingException ex){
+        return new ResponseEntity<>(ApiResponse.<String>builder().status(HttpStatus.BAD_REQUEST.value()).message(ex.getOriginalMessage()).build(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

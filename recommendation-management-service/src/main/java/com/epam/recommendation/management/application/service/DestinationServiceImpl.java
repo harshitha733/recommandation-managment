@@ -11,6 +11,9 @@ import com.epam.recommendation.management.application.exception.EntityNotFoundEx
 import com.epam.recommendation.management.application.repository.DestinationRepository;
 import com.epam.recommendation.management.application.repository.StateRepository;
 import com.epam.recommendation.management.application.repository.CountryRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -51,22 +54,7 @@ public class DestinationServiceImpl implements DestinationService{
         destination.setState(request.getState());
         return destination;
     }
-//    private DestinationListDTO convertToDestinationListDTO(Destination destination){
-//        return new DestinationListDTO(
-//                destination.getDestinationId(),
-//                destination.getDestinationName(),
-//                destination.getImageUrl()
-//        );
-//    }
-//    private DestinationDetailsDTO convertToDestinationDetailsDTO(Destination destination){
-//        return new DestinationDetailsDTO(
-//                destination.getDestinationId(),
-//                destination.getDestinationName(),
-//                destination.getRating(),
-//                destination.getDescription(),
-//                destination.getImageUrl()
-//        );
-//    }
+
     public DestinationDetailsDTO createDestination(DestinationRequest request) {
         Destination destination=convertToEntity(request);
 
@@ -104,28 +92,31 @@ public class DestinationServiceImpl implements DestinationService{
                 .orElseThrow(() -> new EntityNotFoundException("Destination not found"));
         return new DestinationDetailsDTO(destination);
     }
+    private Destination updateDetailsMapper(Destination updatingDestination, String destinationUpdateDetails) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, Boolean.FALSE);
+        DestinationRequest request = mapper.readValue(destinationUpdateDetails, DestinationRequest.class);
 
-    public DestinationDetailsDTO updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails) {
-        Destination updatingDestination = destinationRepository.findById(destinationId).orElseThrow(() -> new EntityNotFoundException("No destination found with the id "+destinationId));
-        destinationUpdateDetails.forEach((key, value) -> {
-            try {
-                switch (key) {
-                    case "destinationName" -> updatingDestination.setDestinationName((String) value);
-                    case "description" -> updatingDestination.setDescription((String) value);
-                    case "imageUrl" -> updatingDestination.setImageUrl((String) value);
-                    case "rating" ->updatingDestination.setRating((Double) value);
-                }
-            }catch (ClassCastException | IllegalArgumentException exception){
-                throw new IllegalArgumentException("Not valid type of input format for "+ key);
-            }
-
-        });
-        try {
-            destinationRepository.save(updatingDestination);
-            return new DestinationDetailsDTO(updatingDestination.getDestinationId(), updatingDestination.getDestinationName(), updatingDestination.getRating(), updatingDestination.getDescription(), updatingDestination.getImageUrl());
-        } catch (DataIntegrityViolationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Data integrity violation", e);
+        if (request.getDestinationName() != null) {
+            updatingDestination.setDestinationName(request.getDestinationName());
         }
+        if (request.getDescription() != null) {
+            updatingDestination.setDescription(request.getDescription());
+        }
+        if (request.getImageUrl() != null) {
+            updatingDestination.setImageUrl(request.getImageUrl());
+        }
+        if (request.getRating() != null) {
+            updatingDestination.setRating(request.getRating());
+        }
+
+        return updatingDestination;
+    }
+
+    public DestinationDetailsDTO updateDestination(Long destinationId, String destinationUpdateDetails) throws JsonProcessingException {
+        Destination destination = destinationRepository.findById(destinationId).orElseThrow(() -> new EntityNotFoundException("No destination found with the id "+destinationId));
+        Destination updatingDestination=updateDetailsMapper(destination, destinationUpdateDetails);
+        return new DestinationDetailsDTO(destinationRepository.save(updatingDestination));
     }
 
     public String deleteDestinationById(Long destinationId) {
