@@ -1,5 +1,6 @@
 package com.epam.recommendation.management.application.dto;
 
+import com.epam.recommendation.management.application.entity.Destination;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,4 +14,9 @@ public class DestinationListDTO {
     private String destinationName;
     private String imageUrl;
 
+    public DestinationListDTO(Destination destination) {
+        this.destinationId = destination.getDestinationId();
+        this.destinationName = destination.getDestinationName();
+        this.imageUrl = destination.getImageUrl();
+    }
 }

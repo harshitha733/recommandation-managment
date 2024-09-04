@@ -51,22 +51,22 @@ public class DestinationServiceImpl implements DestinationService{
         destination.setState(request.getState());
         return destination;
     }
-    private DestinationListDTO convertToDestinationListDTO(Destination destination){
-        return new DestinationListDTO(
-                destination.getDestinationId(),
-                destination.getDestinationName(),
-                destination.getImageUrl()
-        );
-    }
-    private DestinationDetailsDTO convertToDestinationDetailsDTO(Destination destination){
-        return new DestinationDetailsDTO(
-                destination.getDestinationId(),
-                destination.getDestinationName(),
-                destination.getRating(),
-                destination.getDescription(),
-                destination.getImageUrl()
-        );
-    }
+//    private DestinationListDTO convertToDestinationListDTO(Destination destination){
+//        return new DestinationListDTO(
+//                destination.getDestinationId(),
+//                destination.getDestinationName(),
+//                destination.getImageUrl()
+//        );
+//    }
+//    private DestinationDetailsDTO convertToDestinationDetailsDTO(Destination destination){
+//        return new DestinationDetailsDTO(
+//                destination.getDestinationId(),
+//                destination.getDestinationName(),
+//                destination.getRating(),
+//                destination.getDescription(),
+//                destination.getImageUrl()
+//        );
+//    }
     public DestinationDetailsDTO createDestination(DestinationRequest request) {
         Destination destination=convertToEntity(request);
 
@@ -82,7 +82,7 @@ public class DestinationServiceImpl implements DestinationService{
         }
         destination.setState(state);
         Destination updatedDestination =destinationRepository.save(destination);
-        return convertToDestinationDetailsDTO(updatedDestination);
+        return new DestinationDetailsDTO(updatedDestination);
     }
 
     public Page<DestinationListDTO> getDestinationNamesByStateId(Long stateId, int page, int size) {
@@ -92,20 +92,18 @@ public class DestinationServiceImpl implements DestinationService{
         if (destinationPage.isEmpty()) throw new EntityNotFoundException("No destinations found");
 
         List<DestinationListDTO> destinationList = destinationPage.stream()
-                .map(this::convertToDestinationListDTO)
+                .map(DestinationListDTO::new)
                 .collect(Collectors.toList());
 
         return new PageImpl<>(destinationList, pageable, destinationPage.getTotalElements());
     }
 
 
-
     public DestinationDetailsDTO getDestinationInformation(Long destinationId){
         Destination destination = destinationRepository.findById(destinationId)
                 .orElseThrow(() -> new EntityNotFoundException("Destination not found"));
-        return convertToDestinationDetailsDTO(destination);
+        return new DestinationDetailsDTO(destination);
     }
-
 
     public DestinationDetailsDTO updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails) {
         Destination updatingDestination = destinationRepository.findById(destinationId).orElseThrow(() -> new EntityNotFoundException("No destination found with the id "+destinationId));
@@ -131,7 +129,6 @@ public class DestinationServiceImpl implements DestinationService{
     }
 
     public String deleteDestinationById(Long destinationId) {
-
         if (destinationRepository.existsById(destinationId)) {
             destinationRepository.deleteById(destinationId);
             return "Destination with ID " + destinationId + " has been successfully deleted.";
