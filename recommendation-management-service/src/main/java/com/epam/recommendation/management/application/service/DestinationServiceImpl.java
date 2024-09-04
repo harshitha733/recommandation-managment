@@ -86,18 +86,34 @@ public class DestinationServiceImpl implements DestinationService{
         if (destinationPage.isEmpty()) throw new EntityNotFoundException("No destinations found");
 
         List<DestinationListDTO> destinationList = destinationPage.stream()
-                .map(destination -> new DestinationListDTO(destination.getDestinationId(),
-                        destination.getDestinationName(), destination.getImageUrl()))
+                .map(this::convertToDestinationListDTO)
                 .collect(Collectors.toList());
 
         return new PageImpl<>(destinationList, pageable, destinationPage.getTotalElements());
     }
 
+    private DestinationListDTO convertToDestinationListDTO(Destination destination){
+        return new DestinationListDTO(
+                destination.getDestinationId(),
+                destination.getDestinationName(),
+                destination.getImageUrl()
+        );
+    }
+
     public DestinationDetailsDTO getDestinationInformation(Long destinationId){
         Destination destination = destinationRepository.findById(destinationId)
                 .orElseThrow(() -> new EntityNotFoundException("Destination not found"));
-        return new DestinationDetailsDTO(destination.getDestinationId(),destination.getDestinationName(),
-                destination.getRating(),destination.getDescription(),destination.getImageUrl());
+        return convertToDestinationDetailsDTO(destination);
+    }
+
+    private DestinationDetailsDTO convertToDestinationDetailsDTO(Destination destination){
+        return new DestinationDetailsDTO(
+                destination.getDestinationId(),
+                destination.getDestinationName(),
+                destination.getRating(),
+                destination.getDescription(),
+                destination.getImageUrl()
+        );
     }
 
 
