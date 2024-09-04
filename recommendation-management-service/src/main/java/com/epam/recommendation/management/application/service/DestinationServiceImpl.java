@@ -55,21 +55,18 @@ public class DestinationServiceImpl implements DestinationService{
     public Destination createDestination(DestinationRequest request) {
         Destination destination=convertToEntity(request);
 
-        Country country = countryRepository.findByCountryName(destination.getState().getCountry().getCountryName())
-                .orElseThrow(()-> {throw new EntityNotFoundException("NO country found");});
+        Country country = countryRepository.findByCountryName(destination.getState().getCountry().getCountryName()).orElseThrow(()-> {throw new EntityNotFoundException("No country found");});
 
-        State state = stateRepository.findByStateNameAndCountry(destination.getState().getStateName(), country)
-                .orElseThrow(() -> new EntityNotFoundException("State not found"));
+        State state = stateRepository.findByStateNameAndCountry(destination.getState().getStateName(), country).orElseThrow(() -> new EntityNotFoundException("State not found"));
 
-        boolean destinationExists= destinationRepository.existsByDestinationNameAndStateStateNameAndStateCountryCountryName(
-                destination.getDestinationName(), state.getStateName(), country.getCountryName()
+        boolean destinationExists= destinationRepository.existsByDestinationNameAndStateStateNameAndStateCountryCountryName(destination.getDestinationName(), state.getStateName(), country.getCountryName()
         );
 
         if(destinationExists){
             throw new DestinationAlreadyExistsException("Destination already exists");
         }
-
         destination.setState(state);
+
         return destinationRepository.save(destination);
     }
 

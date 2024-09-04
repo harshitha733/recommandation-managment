@@ -18,11 +18,7 @@ public class StateServiceImpl implements StateService{
 
     public StateDto convertToDTO(State state) {
         if (state == null) return null;
-        StateDto stateDto = new StateDto();
-        stateDto.setStateId(state.getStateId());
-        stateDto.setStateName(state.getStateName());
-        stateDto.setImageUrl(state.getImageUrl());
-        return stateDto;
+        return new StateDto(state.getStateId(),state.getStateName(),state.getImageUrl());
     }
 
     public Page<StateDto> getStatesByCountryWithPagination(Long countryId, Pageable pageable) {
