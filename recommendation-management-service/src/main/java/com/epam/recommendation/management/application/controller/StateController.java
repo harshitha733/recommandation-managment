@@ -1,13 +1,9 @@
 package com.epam.recommendation.management.application.controller;
 
 import com.epam.recommendation.management.application.dto.StateDto;
-import com.epam.recommendation.management.application.entity.State;
 import com.epam.recommendation.management.application.response.ApiResponse;
 import com.epam.recommendation.management.application.service.StateService;
-import com.epam.recommendation.management.application.service.StateServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Page;

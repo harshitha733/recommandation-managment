@@ -1,7 +1,5 @@
 package com.epam.recommendation.management.application.dto;
 
-import com.epam.recommendation.management.application.entity.Country;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Data

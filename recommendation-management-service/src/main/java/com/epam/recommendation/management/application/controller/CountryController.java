@@ -1,16 +1,13 @@
 package com.epam.recommendation.management.application.controller;
 
 import com.epam.recommendation.management.application.dto.CountryDto;
-import com.epam.recommendation.management.application.dto.StateDto;
 import com.epam.recommendation.management.application.response.ApiResponse;
 import com.epam.recommendation.management.application.service.CountryService;
-import com.epam.recommendation.management.application.service.CountryServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin

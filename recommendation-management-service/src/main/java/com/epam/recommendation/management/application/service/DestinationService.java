@@ -3,7 +3,6 @@ package com.epam.recommendation.management.application.service;
 import com.epam.recommendation.management.application.dto.DestinationDetailsDTO;
 import com.epam.recommendation.management.application.dto.DestinationListDTO;
 import com.epam.recommendation.management.application.dto.DestinationRequest;
-import com.epam.recommendation.management.application.entity.Destination;
 import org.springframework.data.domain.Page;
 
 import java.util.Map;

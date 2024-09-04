@@ -27,12 +27,9 @@ import java.util.stream.Collectors;
 @Service
 public class DestinationServiceImpl implements DestinationService{
 
-
     private final DestinationRepository destinationRepository;
 
-
     private final StateRepository stateRepository;
-
 
     private final CountryRepository countryRepository;
 
@@ -99,7 +96,6 @@ public class DestinationServiceImpl implements DestinationService{
         return new DestinationDetailsDTO(destination.getDestinationId(),destination.getDestinationName(),
                 destination.getRating(),destination.getDescription(),destination.getImageUrl());
     }
-
 
     public DestinationDetailsDTO updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails) {
         Destination updatingDestination = destinationRepository.findById(destinationId).orElseThrow(() -> new EntityNotFoundException("No destination found with the id "+destinationId));

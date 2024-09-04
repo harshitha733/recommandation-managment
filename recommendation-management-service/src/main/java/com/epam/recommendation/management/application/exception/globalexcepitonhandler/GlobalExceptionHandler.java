@@ -3,12 +3,10 @@ import com.epam.recommendation.management.application.exception.DestinationAlrea
 import com.epam.recommendation.management.application.exception.EntityNotFoundException;
 import com.epam.recommendation.management.application.response.ApiResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
