@@ -56,14 +56,9 @@ public class DestinationServiceImpl implements DestinationService{
         Destination destination=convertToEntity(request);
 
         Country country = countryRepository.findByCountryName(destination.getState().getCountry().getCountryName())
-//                .orElseGet(() -> countryRepository.save(destination.getState().getCountry()));
                 .orElseThrow(()-> {throw new EntityNotFoundException("NO country found");});
 
         State state = stateRepository.findByStateNameAndCountry(destination.getState().getStateName(), country)
-//                .orElseGet(() -> {
-//                    destination.getState().setCountry(country);
-//                    return stateRepository.save(destination.getState());
-//                });
                 .orElseThrow(() -> new EntityNotFoundException("State not found"));
 
         boolean destinationExists= destinationRepository.existsByDestinationNameAndStateStateNameAndStateCountryCountryName(
@@ -105,7 +100,7 @@ public class DestinationServiceImpl implements DestinationService{
         destinationUpdateDetails.forEach((key, value) -> {
             try {
                 switch (key) {
-                    case "name" -> updatingDestination.setDestinationName((String) value);
+                    case "destinationName" -> updatingDestination.setDestinationName((String) value);
                     case "description" -> updatingDestination.setDescription((String) value);
                     case "imageUrl" -> updatingDestination.setImageUrl((String) value);
                     case "rating" ->updatingDestination.setRating((Double) value);
