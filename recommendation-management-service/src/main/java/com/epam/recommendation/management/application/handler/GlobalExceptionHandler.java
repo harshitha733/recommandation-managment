@@ -1,4 +1,4 @@
-package com.epam.recommendation.management.application.globalexcepitonhandler;
+package com.epam.recommendation.management.application.handler;
 import com.epam.recommendation.management.application.exception.DestinationAlreadyExistsException;
 import com.epam.recommendation.management.application.exception.EntityNotFoundException;
 import com.epam.recommendation.management.application.response.ApiResponse;
