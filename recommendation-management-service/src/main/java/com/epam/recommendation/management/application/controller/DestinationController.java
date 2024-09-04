@@ -53,9 +53,9 @@ public class DestinationController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Destination>> createDestination(@RequestBody @Valid DestinationRequest request) {
-        Destination savedDestination = destinationService.createDestination(request);
-        ApiResponse<Destination> response = ApiResponse.<Destination>builder()
+    public ResponseEntity<ApiResponse<DestinationDetailsDTO>> createDestination(@RequestBody @Valid DestinationRequest request) {
+        DestinationDetailsDTO savedDestination = destinationService.createDestination(request);
+        ApiResponse<DestinationDetailsDTO> response = ApiResponse.<DestinationDetailsDTO>builder()
                 .status(HttpStatus.CREATED.value())
                 .message("Destination created successfully.")
                 .data(savedDestination)

@@ -51,8 +51,17 @@ public class DestinationServiceImpl implements DestinationService{
         destination.setState(request.getState());
         return destination;
     }
+    public DestinationDetailsDTO convertToDTO(Destination destination){
+        DestinationDetailsDTO destinationDetailsDTO =new DestinationDetailsDTO();
+        destinationDetailsDTO.setDestinationId(destination.getDestinationId());
+        destinationDetailsDTO.setDestinationName(destination.getDestinationName());
+        destinationDetailsDTO.setRating(destination.getRating());
+        destinationDetailsDTO.setDescription(destination.getDescription());
+        destinationDetailsDTO.setImageUrl(destination.getImageUrl());
+        return destinationDetailsDTO;
+    }
 
-    public Destination createDestination(DestinationRequest request) {
+    public DestinationDetailsDTO createDestination(DestinationRequest request) {
         Destination destination=convertToEntity(request);
 
         Country country = countryRepository.findByCountryName(destination.getState().getCountry().getCountryName()).orElseThrow(()-> {throw new EntityNotFoundException("No country found");});
@@ -66,8 +75,8 @@ public class DestinationServiceImpl implements DestinationService{
             throw new DestinationAlreadyExistsException("Destination already exists");
         }
         destination.setState(state);
-
-        return destinationRepository.save(destination);
+        Destination updatedDestination =destinationRepository.save(destination);
+        return convertToDTO(updatedDestination);
     }
 
     public Page<DestinationListDTO> getDestinationNamesByStateId(Long stateId, int page, int size) {
