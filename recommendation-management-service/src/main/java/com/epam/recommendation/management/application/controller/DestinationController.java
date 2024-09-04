@@ -6,6 +6,7 @@ import com.epam.recommendation.management.application.dto.DestinationRequest;
 import com.epam.recommendation.management.application.entity.Destination;
 import com.epam.recommendation.management.application.response.ApiResponse;
 import com.epam.recommendation.management.application.service.DestinationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -64,7 +65,7 @@ public class DestinationController {
     }
 
     @PatchMapping("{destinationId}")
-    public ResponseEntity<ApiResponse<DestinationDetailsDTO>> updateDestination(@PathVariable("destinationId") Long destinationId,@RequestBody Map<String,Object> destinationUpdateDetails){
+    public ResponseEntity<ApiResponse<DestinationDetailsDTO>> updateDestination(@PathVariable("destinationId") Long destinationId,@RequestBody String  destinationUpdateDetails) throws JsonProcessingException {
         DestinationDetailsDTO destination=destinationService.updateDestination(destinationId, destinationUpdateDetails);
         return new ResponseEntity<>(ApiResponse.<DestinationDetailsDTO>builder()
                 .status(HttpStatus.OK.value())
