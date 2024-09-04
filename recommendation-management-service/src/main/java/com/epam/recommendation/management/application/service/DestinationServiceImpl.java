@@ -51,16 +51,22 @@ public class DestinationServiceImpl implements DestinationService{
         destination.setState(request.getState());
         return destination;
     }
-    public DestinationDetailsDTO convertToDTO(Destination destination){
-        DestinationDetailsDTO destinationDetailsDTO =new DestinationDetailsDTO();
-        destinationDetailsDTO.setDestinationId(destination.getDestinationId());
-        destinationDetailsDTO.setDestinationName(destination.getDestinationName());
-        destinationDetailsDTO.setRating(destination.getRating());
-        destinationDetailsDTO.setDescription(destination.getDescription());
-        destinationDetailsDTO.setImageUrl(destination.getImageUrl());
-        return destinationDetailsDTO;
+    private DestinationListDTO convertToDestinationListDTO(Destination destination){
+        return new DestinationListDTO(
+                destination.getDestinationId(),
+                destination.getDestinationName(),
+                destination.getImageUrl()
+        );
     }
-
+    private DestinationDetailsDTO convertToDestinationDetailsDTO(Destination destination){
+        return new DestinationDetailsDTO(
+                destination.getDestinationId(),
+                destination.getDestinationName(),
+                destination.getRating(),
+                destination.getDescription(),
+                destination.getImageUrl()
+        );
+    }
     public DestinationDetailsDTO createDestination(DestinationRequest request) {
         Destination destination=convertToEntity(request);
 
@@ -76,7 +82,7 @@ public class DestinationServiceImpl implements DestinationService{
         }
         destination.setState(state);
         Destination updatedDestination =destinationRepository.save(destination);
-        return convertToDTO(updatedDestination);
+        return convertToDestinationDetailsDTO(updatedDestination);
     }
 
     public Page<DestinationListDTO> getDestinationNamesByStateId(Long stateId, int page, int size) {
@@ -92,28 +98,12 @@ public class DestinationServiceImpl implements DestinationService{
         return new PageImpl<>(destinationList, pageable, destinationPage.getTotalElements());
     }
 
-    private DestinationListDTO convertToDestinationListDTO(Destination destination){
-        return new DestinationListDTO(
-                destination.getDestinationId(),
-                destination.getDestinationName(),
-                destination.getImageUrl()
-        );
-    }
+
 
     public DestinationDetailsDTO getDestinationInformation(Long destinationId){
         Destination destination = destinationRepository.findById(destinationId)
                 .orElseThrow(() -> new EntityNotFoundException("Destination not found"));
         return convertToDestinationDetailsDTO(destination);
-    }
-
-    private DestinationDetailsDTO convertToDestinationDetailsDTO(Destination destination){
-        return new DestinationDetailsDTO(
-                destination.getDestinationId(),
-                destination.getDestinationName(),
-                destination.getRating(),
-                destination.getDescription(),
-                destination.getImageUrl()
-        );
     }
 
 
