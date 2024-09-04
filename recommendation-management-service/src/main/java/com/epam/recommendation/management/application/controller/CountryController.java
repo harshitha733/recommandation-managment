@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -22,17 +23,17 @@ public class CountryController {
     }
 
     @GetMapping
-    public ApiResponse<Page<CountryDto>> getCountries(
+    public ResponseEntity<ApiResponse<Page<CountryDto>>> getCountries(
             @RequestParam(value="page",defaultValue = "0") int page,
             @RequestParam(value="size",defaultValue = "8") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<CountryDto> countryList = countryService.getAllCountries(pageable);
 
-        return ApiResponse.<Page<CountryDto>>builder()
+        return new ResponseEntity<>(ApiResponse.<Page<CountryDto>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Countries retrieved successfully.")
                 .data(countryList)
-                .build();
+                .build(),HttpStatus.OK);
     }
 
 }

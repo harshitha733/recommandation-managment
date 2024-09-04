@@ -2,7 +2,6 @@ package com.epam.recommendation.management.application.dto;
 
 import lombok.*;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -11,7 +10,5 @@ public class StateDto {
     private Long stateId;
     private String stateName;
     private String imageUrl;
-
-
 }
 

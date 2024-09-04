@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 @RequestMapping("v1/")
 public class StateController {
 
-
     private final StateService stateService;
 
     public StateController(StateService stateService) {

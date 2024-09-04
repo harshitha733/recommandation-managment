@@ -12,7 +12,7 @@ import lombok.Setter;
 public class DestinationDetailsDTO {
     private Long destinationId;
     private String destinationName;
-    private double rating;
+    private Double rating;
     private String Description;
     private String imageUrl;
 

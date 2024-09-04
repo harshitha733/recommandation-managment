@@ -27,9 +27,12 @@ import java.util.stream.Collectors;
 @Service
 public class DestinationServiceImpl implements DestinationService{
 
+
     private final DestinationRepository destinationRepository;
 
+
     private final StateRepository stateRepository;
+
 
     private final CountryRepository countryRepository;
 
@@ -49,12 +52,12 @@ public class DestinationServiceImpl implements DestinationService{
         return destination;
     }
 
-    public DestinationDetailsDTO createDestination(DestinationRequest request) {
+    public Destination createDestination(DestinationRequest request) {
         Destination destination=convertToEntity(request);
 
         Country country = countryRepository.findByCountryName(destination.getState().getCountry().getCountryName())
 //                .orElseGet(() -> countryRepository.save(destination.getState().getCountry()));
-                .orElseThrow(()-> new EntityNotFoundException("no such country"));
+                .orElseThrow(()-> {throw new EntityNotFoundException("NO country found");});
 
         State state = stateRepository.findByStateNameAndCountry(destination.getState().getStateName(), country)
 //                .orElseGet(() -> {
@@ -72,8 +75,7 @@ public class DestinationServiceImpl implements DestinationService{
         }
 
         destination.setState(state);
-        Destination updatedDestination =destinationRepository.save(destination);
-        return new DestinationDetailsDTO(updatedDestination.getDestinationId(), updatedDestination.getDestinationName(), updatedDestination.getRating(), updatedDestination.getDescription(), updatedDestination.getImageUrl());
+        return destinationRepository.save(destination);
     }
 
     public Page<DestinationListDTO> getDestinationNamesByStateId(Long stateId, int page, int size) {
@@ -97,12 +99,13 @@ public class DestinationServiceImpl implements DestinationService{
                 destination.getRating(),destination.getDescription(),destination.getImageUrl());
     }
 
+
     public DestinationDetailsDTO updateDestination(Long destinationId, Map<String,Object> destinationUpdateDetails) {
         Destination updatingDestination = destinationRepository.findById(destinationId).orElseThrow(() -> new EntityNotFoundException("No destination found with the id "+destinationId));
         destinationUpdateDetails.forEach((key, value) -> {
             try {
                 switch (key) {
-                    case "destinationName" -> updatingDestination.setDestinationName((String) value);
+                    case "name" -> updatingDestination.setDestinationName((String) value);
                     case "description" -> updatingDestination.setDescription((String) value);
                     case "imageUrl" -> updatingDestination.setImageUrl((String) value);
                     case "rating" ->updatingDestination.setRating((Double) value);
